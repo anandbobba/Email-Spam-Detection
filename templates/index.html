@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Spam Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">📧 Email Spam Detector</h1>
+                <p class="subtitle">Powered by Machine Learning</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Info Cards -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">🎯</div>
+                    <h3>High Accuracy</h3>
+                    <p>Advanced ML model trained on balanced dataset</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">⚡</div>
+                    <h3>Instant Results</h3>
+                    <p>Get predictions in real-time</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🔒</div>
+                    <h3>Private & Secure</h3>
+                    <p>Your data is never stored</p>
+                </div>
+            </div>
+
+            <!-- Input Form -->
+            <div class="form-container">
+                <h2>Check Your Email</h2>
+                <form id="predictionForm">
+                    <div class="input-group">
+                        <textarea 
+                            id="emailInput" 
+                            placeholder="Paste your email text here..." 
+                            rows="8"
+                            required>
+                        </textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        Analyze Email
+                    </button>
+                </form>
+            </div>
+
+            <!-- Result Container -->
+            <div id="resultContainer" class="result-container hidden">
+                <div id="loadingSpinner" class="spinner hidden"></div>
+                
+                <div id="resultContent" class="result-content">
+                    <!-- Result will be populated here -->
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorContainer" class="error-container hidden"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Email Spam Detection System | Trained on SMS Spam Collection Dataset</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
