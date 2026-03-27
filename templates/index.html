@@ -3,75 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Spam Detection</title>
+    <title>Spam Intelligence — Enterprise Threat Detection</title>
+    <meta name="description" content="AI-powered multilingual spam and phishing detection system">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <h1 class="title">📧 Email Spam Detector</h1>
-                <p class="subtitle">Powered by Machine Learning</p>
+    <!-- Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-gradient"></div>
+
+    <!-- App Shell -->
+    <div class="app-shell">
+
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <span class="brand-name">Spam<strong>Intelligence</strong></span>
             </div>
-        </header>
+            <div class="nav-tags">
+                <span class="tag">Multilingual</span>
+                <span class="tag">AI-Powered</span>
+            </div>
+            <div class="nav-status">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="status-text">Connecting...</span>
+            </div>
+        </nav>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Info Cards -->
-            <div class="info-grid">
-                <div class="info-card">
-                    <div class="info-icon">🎯</div>
-                    <h3>High Accuracy</h3>
-                    <p>Advanced ML model trained on balanced dataset</p>
-                </div>
-                <div class="info-card">
-                    <div class="info-icon">⚡</div>
-                    <h3>Instant Results</h3>
-                    <p>Get predictions in real-time</p>
-                </div>
-                <div class="info-card">
-                    <div class="info-icon">🔒</div>
-                    <h3>Private & Secure</h3>
-                    <p>Your data is never stored</p>
-                </div>
-            </div>
 
-            <!-- Input Form -->
-            <div class="form-container">
-                <h2>Check Your Email</h2>
-                <form id="predictionForm">
-                    <div class="input-group">
-                        <textarea 
-                            id="emailInput" 
-                            placeholder="Paste your email text here..." 
-                            rows="8"
-                            required>
-                        </textarea>
+            <!-- Left Panel: Input + Live Gauge -->
+            <div class="panel panel-left">
+                <div class="panel-header">
+                    <h1>Message Analysis</h1>
+                    <p class="panel-subtitle">Paste an email or SMS below. The threat score updates in real time.</p>
+                </div>
+
+                <!-- Live Threat Gauge -->
+                <div class="gauge-container">
+                    <div class="gauge-label">Live Threat Score</div>
+                    <div class="gauge-wrapper">
+                        <svg class="gauge-svg" viewBox="0 0 200 110" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Track -->
+                            <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="14" stroke-linecap="round"/>
+                            <!-- Fill -->
+                            <path id="gauge-fill" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGradient)" stroke-width="14" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" style="transition: stroke-dashoffset 0.6s ease, stroke 0.4s ease;"/>
+                            <!-- Gradient def -->
+                            <defs>
+                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#10b981"/>
+                                    <stop offset="50%" style="stop-color:#f59e0b"/>
+                                    <stop offset="100%" style="stop-color:#ef4444"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Center Value -->
+                            <text id="gauge-value" x="100" y="88" text-anchor="middle" font-family="Inter" font-weight="700" font-size="28" fill="#f0f2f5">0%</text>
+                            <text x="100" y="106" text-anchor="middle" font-family="Inter" font-weight="400" font-size="9" fill="#6b7280" letter-spacing="2">THREAT LEVEL</text>
+                        </svg>
+                        <div class="gauge-scale">
+                            <span class="scale-safe">Safe</span>
+                            <span class="scale-mid">Suspicious</span>
+                            <span class="scale-danger">Spam</span>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" id="submitBtn">
-                        Analyze Email
-                    </button>
-                </form>
-            </div>
+                </div>
 
-            <!-- Result Container -->
-            <div id="resultContainer" class="result-container hidden">
-                <div id="loadingSpinner" class="spinner hidden"></div>
-                
-                <div id="resultContent" class="result-content">
-                    <!-- Result will be populated here -->
+                <!-- Textarea -->
+                <div class="input-group">
+                    <textarea
+                        id="message-input"
+                        placeholder="Paste email content here... (English, Hindi, Bengali, Telugu, Tamil, Marathi etc.)"
+                        spellcheck="false"
+                    ></textarea>
+                    <div class="input-footer">
+                        <span id="char-count">0 characters</span>
+                        <span id="lang-detect" class="lang-badge"></span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="input-actions">
+                    <button class="btn btn-primary" id="analyze-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        Run Full Analysis
+                    </button>
+                    <button class="btn btn-ghost" id="clear-btn">Clear</button>
                 </div>
             </div>
 
-            <!-- Error Message -->
-            <div id="errorContainer" class="error-container hidden"></div>
-        </main>
+            <!-- Right Panel: Analysis Results -->
+            <div class="panel panel-right">
+                <!-- Empty State -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <h3>No Analysis Yet</h3>
+                    <p>Type or paste a message on the left to begin.<br>The threat score updates in real-time as you type.</p>
+                </div>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Email Spam Detection System | Trained on SMS Spam Collection Dataset</p>
-        </footer>
+                <!-- Result Card -->
+                <div class="result-card hidden" id="result-card">
+                    <!-- Verdict Banner -->
+                    <div class="verdict-banner" id="verdict-banner">
+                        <div class="verdict-icon" id="verdict-icon"></div>
+                        <div class="verdict-text">
+                            <div class="verdict-label" id="verdict-label">Classification</div>
+                            <div class="verdict-sub" id="verdict-sub">Analyzing...</div>
+                        </div>
+                        <div class="verdict-badge" id="verdict-badge"></div>
+                    </div>
+
+                    <!-- Meta Row -->
+                    <div class="meta-row">
+                        <div class="meta-item">
+                            <div class="meta-label">Language</div>
+                            <div class="meta-value" id="meta-lang">—</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Engine</div>
+                            <div class="meta-value" id="meta-engine">—</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Confidence</div>
+                            <div class="meta-value" id="meta-conf">—</div>
+                        </div>
+                    </div>
+
+                    <!-- Phishing Alert -->
+                    <div class="alert-box alert-danger hidden" id="phishing-alert">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <div>
+                            <strong>Phishing Links Detected</strong>
+                            <div id="phishing-links" class="link-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Threat Categories -->
+                    <div class="section-title">Threat Breakdown</div>
+                    <div class="threat-grid" id="threat-grid">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Keywords -->
+                    <div class="keyword-section" id="keyword-section">
+                        <div class="section-title">Trigger Keywords</div>
+                        <div class="keyword-wrap" id="keyword-wrap"></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
